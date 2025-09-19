@@ -3,7 +3,7 @@
 ![Vim Python](https://img.shields.io/badge/Vim-Python%20Development-blue?style=for-the-badge&logo=vim&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04%2B-orange?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-<img src="https://github.com/Wendors/SetPyVim/blob/main/1.png">
+!{SCREEN}<img src="https://github.com/Wendors/SetPyVim/blob/main/1.png">
 A comprehensive setup script to transform your Vim into a powerful Python IDE with autocompletion, syntax checking, and modern development features.
 
 ## ✨ Features
