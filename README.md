@@ -1,5 +1,5 @@
 # 🐍 Python Development Environment Setup with Vim
-==================================================
+
 
 ![Vim Python](https://img.shields.io/badge/Vim-Python%20Development-blue?style=for-the-badge&logo=vim&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04%2B-orange?style=for-the-badge&logo=ubuntu&logoColor=white)
