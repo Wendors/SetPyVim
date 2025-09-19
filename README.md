@@ -25,10 +25,10 @@ A comprehensive setup script to transform your Vim into a powerful Python IDE wi
 
 ```bash
 # Clone the repository
-git clone git@github.com:Wendors/Progsetspy.git
+git clone git@github.com:Wendors/SetPyVim.git
 
 # Navigate to the project directory
-cd Progsetspy
+cd SetPyVim
 
 # Make the script executable
 chmod +x bash.sh
