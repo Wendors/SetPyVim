@@ -265,11 +265,6 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Clear search highlights
 nnoremap <silent> <leader>n :nohlsearch<CR>
 
-" Copy to system clipboard
-vnoremap <C-c> "+y
-
-" Quick escape from insert mode
-inoremap jj <Esc>
 
 " ======================
 " AUTOCMDS
@@ -309,10 +304,6 @@ endfunc
 
 nnoremap <F2> <cmd>call vimspector#Launch()<CR>``
 nnoremap <F9> <cmd>call vimspector#ToggleBreakpoint()<CR>
-set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
-
-" Автоматичне сортування імпортів
-let g:vim_isort_map = '<C-i>'
 " ======================
 " CUSTOM COMMANDS
 " ======================
@@ -341,8 +332,6 @@ highlight PmenuSel ctermfg=White ctermbg=DarkBlue gui=bold
 " ======================
 " FINAL SETTINGS
 " ======================
-set secure
-set modelines=0
 
 " Enable mouse support
 set mouse=a
@@ -357,11 +346,11 @@ nnoremap <leader>ts :call vimspector#Stop()<CR>        " Stop - зупинити
 nnoremap <leader>tr :call vimspector#Restart()<CR>     " Restart - перезапустити
 nnoremap <leader>tn :call vimspector#StepOver()<CR>    " Next - наступний крок
 nnoremap <leader>ti :call vimspector#StepInto()<CR>    " Into - увійти в функцію
-nnoremap <leader>do :call vimspector#StepOut()<CR>     " Out - вийти з функції
+nnoremap <leader>to :call vimspector#StepOut()<CR>     " Out - вийти з функції
 " Wildmenu completion
 set wildmenu
 set wildmode=longest:full,full
-
-" Persistent undo
+" Просто видаляти при виході (обережно!)
+autocmd VimLeave * if getcwd() != expand('~') && filereadable('.vimspector.json') | call delete('.vimspector.json') | endif" Persistent undo
 set undofile
 
