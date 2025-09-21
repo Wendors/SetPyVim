@@ -203,8 +203,8 @@ let mapleader = " "
 
 " File operations
 nnoremap <leader>w :w<CR>
-nnoremap <leader>q :q<CR>
-nnoremap <leader>wq :wq<CR>
+nnoremap <leader>q :q<CR>          " Закрити вікно
+nnoremap <leader>Q :qa<CR>         " Закрити всі вікна (вихід)
 
 " Buffer navigation
 nnoremap <silent> <leader>h :bprev<CR>
