@@ -7,6 +7,7 @@ set encoding=utf-8
 filetype plugin indent on
 syntax enable
 set cursorline
+set nowrap
 set foldmethod=indent
 set foldlevel=99
 set clipboard=unnamedplus
@@ -14,7 +15,6 @@ set tags=./tags,tags
 set nomodeline
 set noswapfile
 set secure
-set nomodeline
 set modelines=0
 set showmode
 set showcmd
@@ -81,7 +81,7 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'junegunn/goyo.vim'
 Plug 'easymotion/vim-easymotion'
-
+Plug 'vim-scripts/bash-support.vim'
 Plug 'junegunn/limelight.vim'
 
 " 🧠 Navigation & UX
@@ -226,7 +226,7 @@ let g:gitgutter_sign_modified_removed = '│'
 let mapleader = " "
 " Автоматичне створення символічного посилання
 function! SetupVimspector()
-  if !filereadable('.vimspector.json') && isdirectory('.git')
+  if !filereadable('.vimspector.json')
     silent! execute '!ln -sf ~/.vim/vimspector/python.json .vimspector.json'
     echo "Created .vimspector.json symlink"
   endif
@@ -304,6 +304,7 @@ endfunc
 
 nnoremap <F2> <cmd>call vimspector#Launch()<CR>``
 nnoremap <F9> <cmd>call vimspector#ToggleBreakpoint()<CR>
+
 " ======================
 " CUSTOM COMMANDS
 " ======================
@@ -327,7 +328,7 @@ if !isdirectory(&undodir)
     call mkdir(&undodir, "p")
 endif
 
-" Підсвічувати поточний рядок у меню автодоповнення
+"Підсвічувати поточний рядок у меню автодоповнення
 highlight PmenuSel ctermfg=White ctermbg=DarkBlue gui=bold
 " ======================
 " FINAL SETTINGS
