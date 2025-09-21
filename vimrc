@@ -22,6 +22,7 @@ set ruler
 set title
 set showmatch
 set matchtime=2
+
 " ======================
 " IMPROVED SETTINGS
 " ======================
@@ -58,6 +59,11 @@ set history=1000
 set undolevels=1000
 set undofile
 set undodir=~/.vim/undodir
+
+" Create undodir if it doesn't exist
+if !isdirectory(&undodir)
+    call mkdir(&undodir, "p")
+endif
 
 " Update time
 set updatetime=300
@@ -111,13 +117,12 @@ Plug 'tpope/vim-obsession'
 Plug 'mg979/vim-visual-multi'
 
 " 📝 Linting & Formatting
-Plug 'nvie/vim-flake8'
-Plug 'vim-syntastic/syntastic'
 Plug 'puremourning/vimspector'
 
 call plug#end()
 
 let g:python3_host_prog = '/home/wandors/.virtualvenv/bin/python3'
+
 " ======================
 " COLORSCHEME & UI
 " ======================
@@ -137,22 +142,14 @@ let g:airline_powerline_fonts = 1
 " PLUGIN CONFIGURATION
 " ======================
 
-" Увімкнути плагін
+" indent-blankline
 let g:indent_blankline_enabled = v:true
-
-" Показувати лінії тільки для відступів, а не для порожніх рядків
 let g:indent_blankline_show_trailing_blankline_indent = v:false
-
-" Не показувати лінії в буферах типу help, terminal, NERDTree тощо
 let g:indent_blankline_filetype_exclude = ['help', 'terminal', 'dashboard', 'nerdtree']
-
-" Не показувати лінії в певних типах вікон
 let g:indent_blankline_buftype_exclude = ['terminal', 'nofile']
-
-" Символ для лінії (можна змінити на │ або ┆)
 let g:indent_blankline_char = '│'
 
-" COC.nvim
+" COC.nvim extensions
 let g:coc_global_extensions = [
     \ 'coc-pyright',
     \ 'coc-json',
@@ -163,27 +160,6 @@ let g:coc_global_extensions = [
     \ 'coc-prettier',
     \ 'coc-clangd'
     \ ]
-
-" Use tab for trigger completion with characters ahead and navigate
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1) :
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-
-function! CheckBackspace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <cr> to confirm completion
-inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-
-" GoTo code navigation
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
 
 " ALE configuration
 let g:ale_linters = {
@@ -224,25 +200,16 @@ let g:gitgutter_sign_modified_removed = '│'
 " KEY MAPPINGS
 " ======================
 let mapleader = " "
-" Автоматичне створення символічного посилання
-function! SetupVimspector()
-  if !filereadable('.vimspector.json')
-    silent! execute '!ln -sf ~/.vim/vimspector/python.json .vimspector.json'
-    echo "Created .vimspector.json symlink"
-  endif
-endfunction
-" В .vimrc - вкажіть шлях до глобальних конфігів
-let g:vimspector_base_dir = expand('~/.vim/vimspector/')
-autocmd BufEnter *.py call SetupVimspector()
+
 " File operations
 nnoremap <leader>w :w<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>wq :wq<CR>
 
 " Buffer navigation
-nnoremap <silent> <C-h> :bprev<CR>
-nnoremap <silent> <C-l> :bnext<CR>
-nnoremap <silent> <C-q> :bd<CR>
+nnoremap <silent> <leader>h :bprev<CR>
+nnoremap <silent> <leader>l :bnext<CR>
+nnoremap <silent> <leader>q :bd<CR>
 
 " Window navigation
 nnoremap <C-j> <C-w>j
@@ -265,6 +232,19 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Clear search highlights
 nnoremap <silent> <leader>n :nohlsearch<CR>
 
+" Vimspector
+nnoremap <F2> <cmd>call vimspector#Launch()<CR>
+nnoremap <F9> <cmd>call vimspector#ToggleBreakpoint()<CR>
+nnoremap <leader>ts :call vimspector#Stop()<CR>
+nnoremap <leader>tr :call vimspector#Restart()<CR>
+nnoremap <leader>tn :call vimspector#StepOver()<CR>
+nnoremap <leader>ti :call vimspector#StepInto()<CR>
+nnoremap <leader>to :call vimspector#StepOut()<CR>
+
+" Custom commands
+command! -nargs=0 Format :call CocAction('format')
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+command! Time echo strftime("%H:%M:%S")
 
 " ======================
 " AUTOCMDS
@@ -290,47 +270,6 @@ augroup vimrc
 augroup END
 
 " ======================
-" FUNCTIONS
-" ======================
-" Toggle between number and relative number
-function! ToggleNumber()
-    if(&relativenumber == 1)
-        set norelativenumber
-        set number
-    else
-        set relativenumber
-    endif
-endfunc
-
-nnoremap <F2> <cmd>call vimspector#Launch()<CR>``
-nnoremap <F9> <cmd>call vimspector#ToggleBreakpoint()<CR>
-
-" ======================
-" CUSTOM COMMANDS
-" ======================
-command! -nargs=0 Format :call CocAction('format')
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" === УКРАЇНСЬКІ КОМЕНТАРІ ТА МАППІНГИ ===
-let mapleader = " "         " Лідер - пробіл
-
-" Швидке форматування Python
-nnoremap <leader>af :Autoformat<CR>
-nnoremap <leader>is :Isort<CR>
-
-" ======================
-" ENVIRONMENT SPECIFIC
-" ======================
-" Python virtual environment
-
-" Create undodir if it doesn't exist
-if !isdirectory(&undodir)
-    call mkdir(&undodir, "p")
-endif
-
-"Підсвічувати поточний рядок у меню автодоповнення
-highlight PmenuSel ctermfg=White ctermbg=DarkBlue gui=bold
-" ======================
 " FINAL SETTINGS
 " ======================
 
@@ -340,18 +279,9 @@ set mouse=a
 " Session management
 set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize
 
-
-command! Time echo strftime("%H:%M:%S")
-" Повний набір для відладки:
-nnoremap <leader>ts :call vimspector#Stop()<CR>        " Stop - зупинити
-nnoremap <leader>tr :call vimspector#Restart()<CR>     " Restart - перезапустити
-nnoremap <leader>tn :call vimspector#StepOver()<CR>    " Next - наступний крок
-nnoremap <leader>ti :call vimspector#StepInto()<CR>    " Into - увійти в функцію
-nnoremap <leader>to :call vimspector#StepOut()<CR>     " Out - вийти з функції
 " Wildmenu completion
 set wildmenu
 set wildmode=longest:full,full
-" Просто видаляти при виході (обережно!)
-autocmd VimLeave * if getcwd() != expand('~') && filereadable('.vimspector.json') | call delete('.vimspector.json') | endif" Persistent undo
-set undofile
 
+" Highlight completion menu
+highlight PmenuSel ctermfg=White ctermbg=DarkBlue gui=bold
