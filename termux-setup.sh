@@ -42,10 +42,10 @@ if [ ! -d "/data/data/com.termux" ]; then
 fi
 
 # Перевірка доступного місця
-AVAILABLE_SPACE=$(df -BM $HOME | tail -1 | awk '{print $4}' | sed 's/M//')
+AVAILABLE_SPACE=$(df -BM "$HOME" | tail -1 | awk '{print $4}' | sed 's/M//')
 if [ "$AVAILABLE_SPACE" -lt 500 ]; then
     warning "Мало вільного місця: ${AVAILABLE_SPACE}MB (рекомендовано мінімум 500MB)"
-    read -p "Продовжити встановлення? [y/N]: " CONTINUE
+    read -r -p "Продовжити встановлення? [y/N]: " CONTINUE
     if [[ ! $CONTINUE =~ ^[Yy]$ ]]; then
         error "Встановлення скасовано користувачем"
         exit 1
@@ -98,14 +98,14 @@ fi
 # ==============================================================================
 step "Створюємо віртуальне середовище Python..."
 
-read -p "Введіть назву директорії для venv [.venv]: " VENV_DIR
+read -r -p "Введіть назву директорії для venv [.venv]: " VENV_DIR
 VENV_DIR=${VENV_DIR:-.venv}
 VENV_PATH="$HOME/$VENV_DIR"
 
 # Перевірка та створення venv
 if [ -d "$VENV_PATH" ]; then
     warning "Директорія $VENV_PATH вже існує"
-    read -p "Перестворити? [y/N]: " RECREATE
+    read -r -p "Перестворити? [y/N]: " RECREATE
     if [[ $RECREATE =~ ^[Yy]$ ]]; then
         rm -rf "$VENV_PATH"
         python -m venv "$VENV_PATH"
@@ -264,9 +264,11 @@ step "Фінальні налаштування..."
 
 # Додавання шляху до venv в .bashrc
 if ! grep -q "$VENV_PATH/bin" "$HOME/.bashrc"; then
-    echo "" >> "$HOME/.bashrc"
-    echo "# Python virtual environment" >> "$HOME/.bashrc"
-    echo "export PATH=\"$VENV_PATH/bin:\$PATH\"" >> "$HOME/.bashrc"
+    {
+        echo ""
+        echo "# Python virtual environment"
+        echo "export PATH=\"$VENV_PATH/bin:\$PATH\""
+    } >> "$HOME/.bashrc"
     success "Шлях до venv додано в .bashrc"
 fi
 
