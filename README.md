@@ -68,6 +68,8 @@ chmod +x termux-setup.sh
 
 This repository now includes full support for **Termux** - a powerful terminal emulator for Android. You can now set up a complete Python development environment directly on your Android device!
 
+> 📄 For a detailed comparison between Ubuntu and Termux installations, see [TERMUX_DIFFERENCES.md](TERMUX_DIFFERENCES.md)
+
 ### What's Different in Termux?
 
 The `termux-setup.sh` script is specifically adapted for the Termux environment:
