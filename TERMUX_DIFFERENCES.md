@@ -67,7 +67,7 @@ chmod +x termux-setup.sh
 
 ## Limitations in Termux
 
-1. No clipboard integration with system clipboard
+1. No system clipboard integration
 2. GUI-based plugins won't work
 3. Some packages may require significant compilation time on mobile
 4. Limited by mobile device resources (RAM, CPU)
